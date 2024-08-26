@@ -3,12 +3,13 @@ import './style.css'
 import { storyStates } from './Story.js'
 import GameManager from './GameManager.js'
 
+// Hooks til DOM-elementer
 const storyImage = document.getElementById('story-image')
 const storyHeader = document.querySelector('#story-header h1')
 const storyText = document.querySelector('#story-text p')
 const optionButtons = document.getElementById('option-buttons')
 
-
+// Funktion der nulstiller state og starter spillet
 function startGame() {
     GameManager.state.stateID = 1
 
@@ -49,6 +50,11 @@ function showImage(storyState) {
     }
 }
 
+/**
+ * Viser overskriften og teksten i en historie baseret på det angivne storyState-objekt.
+ * 
+ * @param {Object} storyState - Historiens tilstand indeholdende overskrift og tekst egenskaber.
+ */
 function showText(storyState) {
     if (storyState.hasOwnProperty('header')) {
         storyHeader.innerText = storyState.header
@@ -56,8 +62,8 @@ function showText(storyState) {
     if (storyState.hasOwnProperty('text')) {
         storyText.innerText = storyState.text
     }
-
 }
+
 function showChoices(options) {
     // Slet alle knapper fra sidste state
     optionButtons.innerHTML = ''
@@ -76,7 +82,9 @@ function selectOption(option) {
     // Hvis option har en nextState property, så skift stateID til nextState
     if (option.hasOwnProperty('nextState')) {
 
-        // Hvis nextState er -1, så start spillet forfra
+        // Hvis nextState er -1, så start spillet forfra.
+        // nextState kunne have været 1, men dette giver mulighed
+        // at udvikle en "game over" state.
         if (option.nextState === -1) {
             GameManager.state.stateID = 1
         } else {
